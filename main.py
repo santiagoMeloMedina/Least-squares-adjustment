@@ -6,9 +6,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas
 import math
+from constant import MESSAGES, ASSETS_FOLDER, NAMES
 
-def preparingData():
-    data = pandas.read_csv("data.csv")
+def preparingData(file):
+    data = pandas.read_csv(ASSETS_FOLDER(file))
     t = data["t"].tolist()
     y = data["y"].tolist()
     return t, y
@@ -24,38 +25,39 @@ def normalEquations(n, tt, ty):
     n = n if len(tt) >= n else len(ty)
     ec = NormalEquation(tt, ty, n)
     x = np.around(ec.solution(), 3)
-    print(x)
     return Polynomial(n=n, coefficient=x)
 
 def houseHolder(n, tt, ty):
     n = n if len(tt) >= n else len(ty)
     hh = HouseHolder(tt, ty, n)
     x = np.around(hh.solution(), 3)
-    print(x)
     return Polynomial(n=n, coefficient=x)
 
 def getValues(pol, vt, vy):
     error = [abs(v) for v in np.array(vy)-pol.calculate(np.array(vt))]
     error_medio = sum(error)/len(error)
     deviation = math.sqrt(sum([e**2 for e in error])/len(error))
-    print("Error absoluto medio: {}".format(error_medio))
-    print("Desviación estandar: {}".format(deviation))
+    print("{}{}".format(MESSAGES["MAE"], error_medio))
+    print("{}{}".format(MESSAGES["SD"], deviation))
     return
 
 def plotting(tt, ty, vt, vy, dataRange, adjustment):
-    plt.plot(tt, ty, 'ro', label="Entrenamiento", color="blue")
-    plt.plot(vt, vy, 'ro', label="Validación", color="red")
-    plt.plot(dataRange, adjustment, label="Ajuste")
+    plt.plot(tt, ty, 'ro', label=NAMES["TRAINING"], color="blue")
+    plt.plot(vt, vy, 'ro', label=NAMES["VALIDATION"], color="red")
+    plt.plot(dataRange, adjustment, label=NAMES["ADJUSTMENT"])
     plt.legend()
     plt.show()
 
 
 def main():
-    n = 4## Grade of polynomial
-    t, y = preparingData()
+    n = int(input(MESSAGES["GRADE"])) ## Grade of polynomial
+    t, y = preparingData(input(MESSAGES["FILE"]))
     tt, ty, vt, vy = segregateData(t, y)
-    #pol = normalEquations(n, tt, ty)
-    pol = houseHolder(n, tt, ty)
+    if not int(input(MESSAGES["OPERATION"])):
+        pol = normalEquations(n, tt, ty)
+    else:
+        pol = houseHolder(n, tt, ty)
+    pol.displayPol()
     dataRange = np.linspace(min(t), max(t), num=100)
     adjustment = pol.calculate(dataRange)
     getValues(pol, vt, vy)
