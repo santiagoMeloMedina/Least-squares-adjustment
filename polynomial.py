@@ -1,3 +1,4 @@
+import numpy as np
 
 class Polynomial:
     def __init__(self, n=None, coefficient=None):
@@ -9,7 +10,7 @@ class Polynomial:
         return self
 
     def calculate(self, t):
-        result = 0
-        for i in range(self.n):
+        result = np.zeros(len(t))
+        for i in range(len(self.coefficient)):
             result += self.coefficient[i]*(t**i)
         return result
