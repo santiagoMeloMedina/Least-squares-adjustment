@@ -15,8 +15,8 @@ def preparingData(file):
     return t, y
 
 def segregateData(t, y):
-    trainin, trainout, train_size = lambda i: float(t[i*2]), lambda i: float(y[i*2]), len(t)//2
-    validin, validout, valid_size = lambda i: float(t[(i*2)+1]), lambda i: float(y[(i*2)+1]), len(t)//2
+    trainin, trainout, train_size = lambda i: float(t[i*2]), lambda i: float(y[i*2]), (len(t))//2
+    validin, validout, valid_size = lambda i: float(t[(i*2)+1]), lambda i: float(y[(i*2)+1]), (len(t))//2
     training_input, training_output = [trainin(i) for i in range(train_size)], [trainout(i) for i in range(train_size)]
     validation_input, validation_output = [validin(i) for i in range(valid_size)], [validout(i) for i in range(valid_size)]
     return training_input, training_output, validation_input, validation_output
@@ -58,8 +58,8 @@ def main():
     else:
         pol = houseHolder(n, tt, ty)
     pol.displayPol()
-    dataRange = np.linspace(min(t), max(t), num=100)
-    adjustment = pol.calculate(dataRange)
+    dataRange = np.array([ dr for dr in np.linspace(min(t), max(t), num=100)])
+    adjustment = pol.calculate(dataRange[::-1])
     getValues(pol, vt, vy)
     plotting(tt, ty, vt, vy, dataRange, adjustment)
     return

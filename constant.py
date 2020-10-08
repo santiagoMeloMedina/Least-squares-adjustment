@@ -5,7 +5,7 @@ MESSAGES = {
     "OPERATION": "Normal Equations(0)/House Holder(>0|<0): ",
     "FILE": "File: ",
     "MAE": "Median absolute error: ",
-    "SD": "Standard deviation"
+    "SD": "Standard deviation: "
 }
 
 NAMES = {

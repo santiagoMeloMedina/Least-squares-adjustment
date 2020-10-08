@@ -1,12 +1,14 @@
 import numpy as np
 
 class Polynomial:
-    def __init__(self, n=None, coefficient=None):
+    def __init__(self, n=None, coefficient=[]):
         self.n = n
-        self.coefficient = coefficient
+        self.coefficient = []
+        self.setCoefficients(coefficient)
     
     def setCoefficients(self, coefficient):
-        self.coefficient = coefficient
+        for n in coefficient:
+            self.coefficient.append(float(n))
         return self
 
     def calculate(self, t):
